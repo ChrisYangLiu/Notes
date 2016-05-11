@@ -71,17 +71,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+// 便签的编辑页
 public class NoteEditActivity extends Activity implements OnClickListener,
         NoteSettingChangedListener, OnTextViewChangeListener {
+    // header view
     private class HeadViewHolder {
-        public TextView tvModified;
+        public TextView tvModified; // 修改时间
 
         public ImageView ivAlertIcon;
 
         public TextView tvAlertDate;
 
-        public ImageView ibSetBgColor;
+        public ImageView ibSetBgColor; // 设置便签背景
     }
 
     private static final Map<Integer, Integer> sBgSelectorBtnsMap = new HashMap<Integer, Integer>();
@@ -335,6 +336,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.e("touch event triggered:", ev.getRawX() + " " + ev.getRawY());
         if (mNoteBgColorSelector.getVisibility() == View.VISIBLE
                 && !inRangeOfView(mNoteBgColorSelector, ev)) {
             mNoteBgColorSelector.setVisibility(View.GONE);
@@ -363,6 +365,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         return true;
     }
 
+    private void initNoteText() {
+        mNoteEditor.setText("2016-09-09");
+    }
+
     private void initResources() {
         mHeadViewPanel = findViewById(R.id.note_title);
         mNoteHeaderHolder = new HeadViewHolder();
@@ -373,6 +379,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         mNoteHeaderHolder.ibSetBgColor.setOnClickListener(this);
         mNoteEditor = (EditText) findViewById(R.id.note_edit_view);
         mNoteEditorPanel = findViewById(R.id.sv_note_edit);
+        initNoteText();
         mNoteBgColorSelector = findViewById(R.id.note_bg_color_selector);
         for (int id : sBgSelectorBtnsMap.keySet()) {
             ImageView iv = (ImageView) findViewById(id);
@@ -429,8 +436,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         int id = v.getId();
         if (id == R.id.btn_set_bg_color) {
             mNoteBgColorSelector.setVisibility(View.VISIBLE);
-            findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
-                    -                    View.VISIBLE);
+            findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(View.VISIBLE);
         } else if (sBgSelectorBtnsMap.containsKey(id)) {
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
                     View.GONE);
@@ -448,7 +454,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 mNoteEditor.setTextAppearance(this,
                         TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
             }
-            mFontSizeSelector.setVisibility(View.GONE);
+            mFontSizeSelector.setVisibility(View.VISIBLE);
         }
     }
 
